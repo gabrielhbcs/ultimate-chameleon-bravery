@@ -13,37 +13,65 @@
         <h1 data-i18n-key="pageTitle">Ultimate Chameleon Bravery</h1>
       </div>
       <div class="container">
-        <section class="card">
-          <h2 data-i18n-key="imageRouletteTitle">Roleta de poses</h2>
-          <div class="display">
-            <img id="imageDisplay" src="poses/image1.png" alt="Imagem sorteada" />
+        <div class="roulette-group">
+          <section class="card">
+            <h2 data-i18n-key="imageRouletteTitle">Roleta de poses</h2>
+            <div class="display">
+              <img id="imageDisplay" src="poses/image1.png" alt="Pose sorteada" />
+            </div>
+            <button id="spinImages" data-i18n-key="spinImagesButton">Girar roleta de poses</button>
+            <div class="checkbox-container">
+              <input type="checkbox" id="simplePosesCheckbox" checked />
+              <label for="simplePosesCheckbox" data-i18n-key="simplePosesLabel">Poses simples</label>
+            </div>          <div id="imageResult" class="result" data-i18n-key="imageResultText" data-i18n-value="1">Resultado: imagem 1</div>
+          </section>
+          <div id="imageHistoryWrapper" class="history-wrapper">
+            <div id="imageHistory" class="history-list"></div>
           </div>
-          <button id="spinImages" data-i18n-key="spinImagesButton">Girar roleta de poses</button>
-          <div class="checkbox-container">
-            <input type="checkbox" id="simplePosesCheckbox" checked />
-            <label for="simplePosesCheckbox" data-i18n-key="simplePosesLabel">Poses simples</label>
-          </div>
-          <div id="imageResult" class="result" data-i18n-key="imageResultText" data-i18n-value="1">Resultado: imagem 1</div>
-        </section>
-
-        <section class="card">
-          <h2 data-i18n-key="colorRouletteTitle">Roleta de cor</h2>
-          <div id="colorDisplay" class="display color-box" style="background:#2563eb"></div>
-          <button id="spinColor" data-i18n-key="spinColorButton">Girar roleta de cor</button>
-          <div class="checkbox-container">
-            <input type="checkbox" id="simpleColorsCheckbox" />
-            <label for="simpleColorsCheckbox" data-i18n-key="simpleColorsLabel">Cores simples</label>
-          </div>
-          <div id="colorResult" class="result" data-i18n-key="colorResultText" data-i18n-value="rgb(37, 99, 235)">Resultado: rgb(37, 99, 235)</div>
-        </section>
-      </div>
-
-      <div class="container history-container">
-        <div id="imageHistoryWrapper" class="history-wrapper">
-          <div id="imageHistory" class="history-list"></div>
         </div>
-        <div id="colorHistoryWrapper" class="history-wrapper">
-          <div id="colorHistory" class="history-list"></div>
+
+        <div class="roulette-group">
+          <section class="card">
+            <h2 data-i18n-key="colorRouletteTitle">Roleta de Cor</h2>
+            <div id="colorDisplay" class="display color-box" style="background:rgb(248, 250, 252)"></div>
+            <button id="spinColor" data-i18n-key="spinColorButton">Girar roleta de cor</button>
+            <div class="checkbox-container">
+              <input type="checkbox" id="simpleColorsCheckbox" checked />
+              <label for="simpleColorsCheckbox" data-i18n-key="simpleColorsLabel">Cores simples</label>
+            </div>          <div id="colorResult" class="result" data-i18n-key="colorResultText" data-i18n-value="rgb(248, 250, 252)">Resultado: rgb(248, 250, 252)</div>
+          </section>
+          <div id="colorHistoryWrapper" class="history-wrapper">
+            <div id="colorHistory" class="history-list"></div>
+          </div>
+        </div>
+
+        <div class="roulette-group">
+          <section class="card">
+            <h2 data-i18n-key="formatRouletteTitle">Roleta de Formato</h2>
+            <div class="display">
+              <img id="formatImageDisplay" src="format/image1.png" alt="Formato sorteado" />
+            </div>
+            <button id="spinFormatImages" data-i18n-key="spinFormatImagesButton">Girar roleta de formato</button>
+            <!-- Checkbox for simple format poses removed as per request -->
+
+            <div id="formatImageResult" class="result" data-i18n-key="formatImageResultText" data-i18n-value="1">Resultado: formato 1</div>
+          </section>
+          <div id="formatImageHistoryWrapper" class="history-wrapper">
+            <div id="formatImageHistory" class="history-list"></div>
+          </div>
+        </div>
+
+        <div class="roulette-group">
+          <section class="card">
+            <h2 data-i18n-key="multiplierRouletteTitle">Roleta de Multiplicador</h2>
+            <div id="multiplierDisplay" class="display">
+              <span id="multiplierValue" style="font-size: 3rem; font-weight: bold;">x1.0</span>
+            </div>
+            <button id="spinMultiplier" data-i18n-key="spinMultiplierButton">Girar roleta de multiplicador</button>          <div id="multiplierResult" class="result" data-i18n-key="multiplierResultText" data-i18n-value="x1.0">Resultado: x1.0</div>
+          </section>
+          <div id="multiplierHistoryWrapper" class="history-wrapper">
+            <div id="multiplierHistory" class="history-list"></div>
+          </div>
         </div>
       </div>
     </main>

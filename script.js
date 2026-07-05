@@ -5,6 +5,12 @@ const simplePosesCheckbox = document.getElementById('simplePosesCheckbox');
 const imageHistory = document.getElementById('imageHistory');
 
 spinImagesButton.addEventListener('click', () => {
+  // Foca na roleta ao clicar
+  const rouletteGroup = spinImagesButton.closest('.roulette-group');
+  if (rouletteGroup) {
+    rouletteGroup.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
   const totalImages = simplePosesCheckbox.checked ? 8 : 18;
   spinImagesButton.disabled = true;
   let step = 0;
@@ -63,13 +69,19 @@ function getRandomColor() {
   return `rgb(${r}, ${g}, ${b})`;
 }
 
-const initialColor = simpleColors[0]; // Cor inicial é o branco da lista
-colorDisplay.style.background = initialColor;
+const initialColor = 'rgb(248, 250, 252)'; // Cor inicial "Branco"
+colorDisplay.style.backgroundColor = initialColor;
 colorResult.textContent = translations['pt'].colorResultText.replace('{color}', initialColor);
 colorResult.dataset.i18nValue = initialColor;
 
 spinColorButton.addEventListener('click', () => {
   spinColorButton.disabled = true;
+  // Foca na roleta ao clicar
+  const rouletteGroup = spinColorButton.closest('.roulette-group');
+  if (rouletteGroup) {
+    rouletteGroup.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
   const interval = setInterval(() => {
     const color = getRandomColor();
     colorDisplay.style.background = color;
@@ -93,11 +105,107 @@ spinColorButton.addEventListener('click', () => {
   }, 1200);
 });
 
+// --- Roulette: Format ---
+const formatImageDisplay = document.getElementById('formatImageDisplay');
+const formatImageResult = document.getElementById('formatImageResult');
+const spinFormatImagesButton = document.getElementById('spinFormatImages');
+// Removed simpleFormatPosesCheckbox as per request
+const formatImageHistory = document.getElementById('formatImageHistory');
+
+spinFormatImagesButton.addEventListener('click', () => {
+  // Foca na roleta ao clicar
+  const rouletteGroup = spinFormatImagesButton.closest('.roulette-group');
+  if (rouletteGroup) {
+    rouletteGroup.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  const totalFormatImages = 2; // Fixed to 2 images as per request
+  spinFormatImagesButton.disabled = true;
+  let step = 0;
+  const interval = setInterval(() => {
+    const index = (step % totalFormatImages) + 1;
+    formatImageDisplay.src = `format/image${index}.png`;
+    formatImageResult.textContent = translations[currentLang].spinningText.replace('{value}', index);
+    step += 1;
+  }, 80);
+
+  const finalIndex = Math.floor(Math.random() * totalFormatImages) + 1;
+  setTimeout(() => {
+    clearInterval(interval);
+    formatImageDisplay.src = `format/image${finalIndex}.png`;
+    formatImageResult.textContent = translations[currentLang].formatImageResultText.replace('{finalIndex}', finalIndex);
+    formatImageResult.dataset.i18nValue = finalIndex;
+    spinFormatImagesButton.disabled = false;
+
+    // Adiciona ao histórico de imagens de formato
+    const historyItem = document.createElement('div');
+    historyItem.classList.add('history-item');
+    const historyImg = document.createElement('img');
+    historyImg.src = `format/image${finalIndex}.png`;
+    historyItem.appendChild(historyImg);
+    formatImageHistory.prepend(historyItem);
+    trimHistory(formatImageHistory);
+  }, 1200);
+});
+
+// --- Roulette: Multiplier ---
+const multiplierDisplay = document.getElementById('multiplierDisplay');
+const multiplierValueSpan = document.getElementById('multiplierValue');
+const multiplierResult = document.getElementById('multiplierResult');
+const spinMultiplierButton = document.getElementById('spinMultiplier');
+const multiplierHistory = document.getElementById('multiplierHistory');
+
+const multiplierOptions = ['x1.0', 'x1.4', 'x1.7'];
+
+multiplierValueSpan.textContent = multiplierOptions[0]; // Set initial value
+multiplierResult.textContent = translations['pt'].multiplierResultText.replace('{value}', multiplierOptions[0]);
+multiplierResult.dataset.i18nValue = multiplierOptions[0];
+
+spinMultiplierButton.addEventListener('click', () => {
+  // Foca na roleta ao clicar
+  const rouletteGroup = spinMultiplierButton.closest('.roulette-group');
+  if (rouletteGroup) {
+    rouletteGroup.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  spinMultiplierButton.disabled = true;
+  let step = 0;
+  const interval = setInterval(() => {
+    const value = multiplierOptions[step % multiplierOptions.length];
+    multiplierValueSpan.textContent = value;
+    multiplierResult.textContent = translations[currentLang].spinningText.replace('{value}', value);
+    step += 1;
+  }, 60);
+
+  const finalValue = multiplierOptions[Math.floor(Math.random() * multiplierOptions.length)];
+  setTimeout(() => {
+    clearInterval(interval);
+    multiplierValueSpan.textContent = finalValue;
+    multiplierResult.textContent = translations[currentLang].multiplierResultText.replace('{value}', finalValue);
+    multiplierResult.dataset.i18nValue = finalValue;
+    spinMultiplierButton.disabled = false;
+
+    const historyItem = document.createElement('div');
+    historyItem.classList.add('history-item');
+    historyItem.textContent = finalValue; // Display the value in history
+    multiplierHistory.prepend(historyItem);
+    trimHistory(multiplierHistory);
+  }, 1200);
+});
+
 // --- Internationalization (i18n) ---
 const langToggleButton = document.getElementById('lang-toggle');
 
 function trimHistory(list) {
   const maxItems = 5;
+  const wrapper = list.parentElement;
+
+  // Adiciona a classe para o degradê apenas quando a lista está cheia.
+  if (list.children.length >= maxItems) {
+    wrapper.classList.add('is-full');
+  } else {
+    wrapper.classList.remove('is-full');
+  }
 
   while (list.children.length > maxItems) {
     // .prepend() adds to the start, so the oldest item is always the last one
@@ -129,6 +237,12 @@ function translateElement(element) {
   } else if (key === 'colorResultText') {
     const color = element.dataset.i18nValue;
     text = text.replace('{color}', color);
+  } else if (key === 'multiplierResultText') {
+    const value = element.dataset.i18nValue;
+    text = text.replace('{value}', value);
+  } else if (key === 'formatImageResultText') {
+    const finalIndex = element.dataset.i18nValue;
+    text = text.replace('{finalIndex}', finalIndex);
   }
 
   element.textContent = text;

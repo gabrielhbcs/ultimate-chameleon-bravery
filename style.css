@@ -37,6 +37,13 @@ body {
   margin-right: auto; /* Centraliza o card dentro da célula da grid */
 }
 
+.roulette-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Espaço entre o card e seu histórico */
+  /* O card e o history-wrapper dentro deste grupo serão centralizados individualmente */
+}
+
 .header {
   position: relative;
   text-align: center;
@@ -131,13 +138,10 @@ button:disabled {
 }
 
 .history-wrapper {
+  max-width: var(--card-width); /* Alinha a largura com o card */
   overflow: hidden; /* This is the key to prevent pushing the layout */
   position: relative;
   min-width: 0; /* Solves the grid item expansion bug */
-}
-
-.history-container {
-  margin-top: 24px;
 }
 
 .history-list {
@@ -147,23 +151,32 @@ button:disabled {
   overflow-x: auto; /* Permite rolagem se muitos itens */
   /* Esconde a barra de rolagem para um visual mais limpo */
   scrollbar-width: none; /* Firefox */
+  flex-direction: row; /* Default: LTR flow */
+  justify-content: flex-start; /* Default: list starts left */
 }
 
 .history-list::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
 
-#imageHistory {
+/* Styling for roulette groups in the left column (1st and 3rd) */
+.container .roulette-group:nth-child(odd) .history-wrapper {
+  margin-left: auto; /* Push to the right */
+  margin-right: 0;
+}
+
+.container .roulette-group:nth-child(odd) .history-list {
   flex-direction: row-reverse;
   justify-content: flex-start; /* Alinha à direita (centro da página), crescendo para a esquerda */
 }
-
-#imageHistoryWrapper {
+.container .roulette-group:nth-child(odd) .history-wrapper.is-full {
   mask-image: linear-gradient(to right, transparent, black 20%);
 }
 
-#colorHistoryWrapper {
-  mask-image: linear-gradient(to left, transparent, black 20%);
+/* Styling for roulette groups in the right column (2nd and 4th) */
+.container .roulette-group:nth-child(even) .history-wrapper {
+  margin-left: 0;
+  margin-right: auto; /* Push to the left */
 }
 
 .history-item {
@@ -175,6 +188,12 @@ button:disabled {
   box-sizing: border-box; /* Garante que a borda seja incluída na largura de 64px */
   background-color: #0f172a;
   overflow: hidden; /* Garante que a imagem interna não vaze */
+  display: flex; /* Added for centering text */
+  align-items: center; /* Added for centering text */
+  justify-content: center; /* Added for centering text */
+  color: #f9fafb; /* Ensure text is visible */
+  font-size: 0.9rem; /* Adjust font size for text */
+  font-weight: bold; /* Make text bold */
 }
 
 .history-item img {
@@ -187,4 +206,7 @@ button:disabled {
   .container {
     grid-template-columns: 1fr; /* Empilha em telas menores */
   }
+}
+.container .roulette-group:nth-child(even) .history-wrapper.is-full {
+  mask-image: linear-gradient(to left, transparent, black 20%);
 }
