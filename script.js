@@ -1,5 +1,24 @@
+let currentLang = localStorage.getItem('lang') || 'pt';
+
+// --- Image Preloading ---
+// This will load the images into the browser's cache when the page loads.
+// It makes the roulette animation smoother and prevents the "ConnectionAbortedError"
+// on the development server by avoiding rapid-fire network requests.
+function preloadImages(count, path, prefix = 'image', extension = 'png') {
+  for (let i = 1; i <= count; i++) {
+    const img = new Image();
+    img.src = `${path}/${prefix}${i}.${extension}`;
+  }
+}
+
+// Preload all possible images for the roulettes
+preloadImages(18, 'poses'); // Preload all 18 pose images
+preloadImages(2, 'format'); // Preload the 2 format images
+
 const imageDisplay = document.getElementById('imageDisplay');
-const imageResult = document.getElementById('imageResult');
+imageDisplay.onerror = function() {
+  console.error(`Erro ao carregar a imagem: ${this.src}`);
+};
 const spinImagesButton = document.getElementById('spinImages');
 const simplePosesCheckbox = document.getElementById('simplePosesCheckbox');
 const imageHistory = document.getElementById('imageHistory');
@@ -17,7 +36,6 @@ spinImagesButton.addEventListener('click', () => {
   const interval = setInterval(() => {
     const index = (step % totalImages) + 1; // Assuming images are named image1.png, image2.png, etc.
     imageDisplay.src = `poses/image${index}.png`;
-    imageResult.textContent = translations[currentLang].spinningText.replace('{value}', index);
     step += 1;
   }, 80);
 
@@ -25,8 +43,6 @@ spinImagesButton.addEventListener('click', () => {
   setTimeout(() => {
     clearInterval(interval);
     imageDisplay.src = `poses/image${finalIndex}.png`;
-    imageResult.textContent = translations[currentLang].imageResultText.replace('{finalIndex}', finalIndex);
-    imageResult.dataset.i18nValue = finalIndex;
     spinImagesButton.disabled = false;
 
     // Adiciona ao histórico de imagens
@@ -41,7 +57,6 @@ spinImagesButton.addEventListener('click', () => {
 });
 
 const colorDisplay = document.getElementById('colorDisplay');
-const colorResult = document.getElementById('colorResult');
 const spinColorButton = document.getElementById('spinColor');
 const simpleColorsCheckbox = document.getElementById('simpleColorsCheckbox');
 const colorHistory = document.getElementById('colorHistory');
@@ -71,8 +86,6 @@ function getRandomColor() {
 
 const initialColor = 'rgb(248, 250, 252)'; // Cor inicial "Branco"
 colorDisplay.style.backgroundColor = initialColor;
-colorResult.textContent = translations['pt'].colorResultText.replace('{color}', initialColor);
-colorResult.dataset.i18nValue = initialColor;
 
 spinColorButton.addEventListener('click', () => {
   spinColorButton.disabled = true;
@@ -85,15 +98,12 @@ spinColorButton.addEventListener('click', () => {
   const interval = setInterval(() => {
     const color = getRandomColor();
     colorDisplay.style.background = color;
-    colorResult.textContent = translations[currentLang].spinningText.replace('{value}', color);
   }, 60);
 
   setTimeout(() => {
     clearInterval(interval);
     const color = getRandomColor();
     colorDisplay.style.background = color;
-    colorResult.textContent = translations[currentLang].colorResultText.replace('{color}', color);
-    colorResult.dataset.i18nValue = color;
     spinColorButton.disabled = false;
 
     // Adiciona ao histórico de cores
@@ -107,7 +117,9 @@ spinColorButton.addEventListener('click', () => {
 
 // --- Roulette: Format ---
 const formatImageDisplay = document.getElementById('formatImageDisplay');
-const formatImageResult = document.getElementById('formatImageResult');
+formatImageDisplay.onerror = function() {
+  console.error(`Erro ao carregar a imagem de formato: ${this.src}`);
+};
 const spinFormatImagesButton = document.getElementById('spinFormatImages');
 // Removed simpleFormatPosesCheckbox as per request
 const formatImageHistory = document.getElementById('formatImageHistory');
@@ -125,7 +137,6 @@ spinFormatImagesButton.addEventListener('click', () => {
   const interval = setInterval(() => {
     const index = (step % totalFormatImages) + 1;
     formatImageDisplay.src = `format/image${index}.png`;
-    formatImageResult.textContent = translations[currentLang].spinningText.replace('{value}', index);
     step += 1;
   }, 80);
 
@@ -133,8 +144,6 @@ spinFormatImagesButton.addEventListener('click', () => {
   setTimeout(() => {
     clearInterval(interval);
     formatImageDisplay.src = `format/image${finalIndex}.png`;
-    formatImageResult.textContent = translations[currentLang].formatImageResultText.replace('{finalIndex}', finalIndex);
-    formatImageResult.dataset.i18nValue = finalIndex;
     spinFormatImagesButton.disabled = false;
 
     // Adiciona ao histórico de imagens de formato
@@ -151,15 +160,12 @@ spinFormatImagesButton.addEventListener('click', () => {
 // --- Roulette: Multiplier ---
 const multiplierDisplay = document.getElementById('multiplierDisplay');
 const multiplierValueSpan = document.getElementById('multiplierValue');
-const multiplierResult = document.getElementById('multiplierResult');
 const spinMultiplierButton = document.getElementById('spinMultiplier');
 const multiplierHistory = document.getElementById('multiplierHistory');
 
 const multiplierOptions = ['x1.0', 'x1.4', 'x1.7'];
 
 multiplierValueSpan.textContent = multiplierOptions[0]; // Set initial value
-multiplierResult.textContent = translations['pt'].multiplierResultText.replace('{value}', multiplierOptions[0]);
-multiplierResult.dataset.i18nValue = multiplierOptions[0];
 
 spinMultiplierButton.addEventListener('click', () => {
   // Foca na roleta ao clicar
@@ -173,7 +179,6 @@ spinMultiplierButton.addEventListener('click', () => {
   const interval = setInterval(() => {
     const value = multiplierOptions[step % multiplierOptions.length];
     multiplierValueSpan.textContent = value;
-    multiplierResult.textContent = translations[currentLang].spinningText.replace('{value}', value);
     step += 1;
   }, 60);
 
@@ -181,8 +186,6 @@ spinMultiplierButton.addEventListener('click', () => {
   setTimeout(() => {
     clearInterval(interval);
     multiplierValueSpan.textContent = finalValue;
-    multiplierResult.textContent = translations[currentLang].multiplierResultText.replace('{value}', finalValue);
-    multiplierResult.dataset.i18nValue = finalValue;
     spinMultiplierButton.disabled = false;
 
     const historyItem = document.createElement('div');
@@ -212,7 +215,6 @@ function trimHistory(list) {
     list.lastChild.remove();
   }
 }
-let currentLang = localStorage.getItem('lang') || 'pt';
 
 function setLanguage(lang) {
   currentLang = lang;
@@ -230,22 +232,7 @@ function setLanguage(lang) {
 function translateElement(element) {
   const key = element.dataset.i18nKey;
   let text = translations[currentLang][key];
-
-  if (key === 'imageResultText') {
-    const finalIndex = element.dataset.i18nValue;
-    text = text.replace('{finalIndex}', finalIndex);
-  } else if (key === 'colorResultText') {
-    const color = element.dataset.i18nValue;
-    text = text.replace('{color}', color);
-  } else if (key === 'multiplierResultText') {
-    const value = element.dataset.i18nValue;
-    text = text.replace('{value}', value);
-  } else if (key === 'formatImageResultText') {
-    const finalIndex = element.dataset.i18nValue;
-    text = text.replace('{finalIndex}', finalIndex);
-  }
-
-  element.textContent = text;
+  if (text) element.textContent = text;
 }
 
 langToggleButton.addEventListener('click', () => {
@@ -254,6 +241,4 @@ langToggleButton.addEventListener('click', () => {
 });
 
 // Set initial language on page load
-document.addEventListener('DOMContentLoaded', () => {
-  setLanguage(currentLang);
-});
+setLanguage(currentLang);

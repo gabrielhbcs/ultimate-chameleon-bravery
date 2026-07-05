@@ -131,12 +131,6 @@ button:disabled {
   cursor: wait;
 }
 
-.result {
-  margin-top: 12px;
-  color: #cbd5e1;
-  font-size: 0.95rem;
-}
-
 .history-wrapper {
   max-width: var(--card-width); /* Alinha a largura com o card */
   overflow: hidden; /* This is the key to prevent pushing the layout */
