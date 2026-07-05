@@ -9,8 +9,8 @@ const translations = {
     simpleColorsLabel: 'Simple colors',
     formatRouletteTitle: 'Format Roulette',
     spinFormatImagesButton: 'Spin format roulette',
-    multiplierRouletteTitle: 'Multiplier Roulette',
-    spinMultiplierButton: 'Spin multiplier roulette',
+    sizeRouletteTitle: 'Size Roulette',
+    spinSizeButton: 'Spin size roulette',
     spinningText: 'Spinning... {value}',
   },
   pt: {
@@ -23,8 +23,8 @@ const translations = {
     simpleColorsLabel: 'Cores simples',
     formatRouletteTitle: 'Roleta de Formato',
     spinFormatImagesButton: 'Girar roleta de formato',
-    multiplierRouletteTitle: 'Roleta de Multiplicador',
-    spinMultiplierButton: 'Girar roleta de multiplicador',
+    sizeRouletteTitle: 'Roleta de Tamanho',
+    spinSizeButton: 'Girar roleta de tamanho',
     spinningText: 'Sorteando... {value}',
   },
 };

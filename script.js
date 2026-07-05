@@ -160,21 +160,21 @@ spinFormatImagesButton.addEventListener('click', () => {
 // --- Roulette: Multiplier ---
 const multiplierDisplay = document.getElementById('multiplierDisplay');
 const multiplierValueSpan = document.getElementById('multiplierValue');
-const spinMultiplierButton = document.getElementById('spinMultiplier');
+const spinSizeButton = document.getElementById('spinMultiplier');
 const multiplierHistory = document.getElementById('multiplierHistory');
 
 const multiplierOptions = ['x1.0', 'x1.4', 'x1.7'];
 
 multiplierValueSpan.textContent = multiplierOptions[0]; // Set initial value
 
-spinMultiplierButton.addEventListener('click', () => {
+spinSizeButton.addEventListener('click', () => {
   // Foca na roleta ao clicar
-  const rouletteGroup = spinMultiplierButton.closest('.roulette-group');
+  const rouletteGroup = spinSizeButton.closest('.roulette-group');
   if (rouletteGroup) {
     rouletteGroup.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
-  spinMultiplierButton.disabled = true;
+  spinSizeButton.disabled = true;
   let step = 0;
   const interval = setInterval(() => {
     const value = multiplierOptions[step % multiplierOptions.length];
@@ -186,7 +186,7 @@ spinMultiplierButton.addEventListener('click', () => {
   setTimeout(() => {
     clearInterval(interval);
     multiplierValueSpan.textContent = finalValue;
-    spinMultiplierButton.disabled = false;
+    spinSizeButton.disabled = false;
 
     const historyItem = document.createElement('div');
     historyItem.classList.add('history-item');
