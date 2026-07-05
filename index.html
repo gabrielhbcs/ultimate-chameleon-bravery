@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ultimate Chameleon Bravery</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <button id="lang-toggle">PT/EN</button>
+    <main>
+      <div class="header">
+        <h1 data-i18n-key="pageTitle">Ultimate Chameleon Bravery</h1>
+      </div>
+      <div class="container">
+        <section class="card">
+          <h2 data-i18n-key="imageRouletteTitle">Roleta de poses</h2>
+          <div class="display">
+            <img id="imageDisplay" src="poses/image1.png" alt="Imagem sorteada" />
+          </div>
+          <button id="spinImages" data-i18n-key="spinImagesButton">Girar roleta de poses</button>
+          <div class="checkbox-container">
+            <input type="checkbox" id="simplePosesCheckbox" checked />
+            <label for="simplePosesCheckbox" data-i18n-key="simplePosesLabel">Poses simples</label>
+          </div>
+          <div id="imageResult" class="result" data-i18n-key="imageResultText" data-i18n-value="1">Resultado: imagem 1</div>
+        </section>
+
+        <section class="card">
+          <h2 data-i18n-key="colorRouletteTitle">Roleta de cor</h2>
+          <div id="colorDisplay" class="display color-box" style="background:#2563eb"></div>
+          <button id="spinColor" data-i18n-key="spinColorButton">Girar roleta de cor</button>
+          <div class="checkbox-container">
+            <input type="checkbox" id="simpleColorsCheckbox" />
+            <label for="simpleColorsCheckbox" data-i18n-key="simpleColorsLabel">Cores simples</label>
+          </div>
+          <div id="colorResult" class="result" data-i18n-key="colorResultText" data-i18n-value="rgb(37, 99, 235)">Resultado: rgb(37, 99, 235)</div>
+        </section>
+      </div>
+
+      <div class="container history-container">
+        <div id="imageHistoryWrapper" class="history-wrapper">
+          <div id="imageHistory" class="history-list"></div>
+        </div>
+        <div id="colorHistoryWrapper" class="history-wrapper">
+          <div id="colorHistory" class="history-list"></div>
+        </div>
+      </div>
+    </main>
+    <script src="i18n.js"></script>
+    <script src="script.js" defer></script>
+  </body>
+</html>
